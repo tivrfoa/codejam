@@ -1,8 +1,6 @@
 import java.util.*;
 import java.io.*;
 
-import java.lang.System.out;
-
 
 /*
  * 
@@ -17,8 +15,13 @@ import java.lang.System.out;
 public class Solution {
 
 	private static Scanner sc;
-	// private static PrintWriter out;
+	private static PrintWriter out;
 	
+	/**
+	 * The V and N magic values were taken from the problem analysis.
+	 * So the competitor would have to make tests to try to reach
+	 * these values.
+	 */ 
 	private static final int V = 14;
 	private static final int N = 60;
 	
@@ -28,7 +31,7 @@ public class Solution {
 	public static void main(String[] args) throws Exception {
 		
 		sc = new Scanner(System.in);
-		// out = new PrintWriter(System.out);	
+		out = new PrintWriter(System.out);	
 		
 		int T = sc.nextInt();
 		
@@ -44,43 +47,33 @@ public class Solution {
 		
 		int vase = 1;
 		for (int d = 1; d < N; ++d) { // sabotaging V vases evenly
-			int day = sc.nextInt();
-			System.err.println("Day " + day);
+			sc.nextInt();
 			out.println(vase + " " + d);
+			out.flush();
+			++vase;
 			if (vase == V + 1) vase = 1;
 		}
 		
-		vase = 1;
-		int lower = 101;
-		int candidateVase = 0;
-		System.err.println("Inspecting ...");
-		for (int i = 0; i < 20; i++) { // inspect
-			int day = sc.nextInt();
-			System.err.println("Day " + day);
-			System.err.println("Inspecting vase " + vase);
-			System.err.println(vase + " " + 0);
-			out.println(vase + " " + 0);
+		int candidateVase = 1;
+		for (int v = 1; v <= 20; ++v) { // inspect
+			sc.nextInt();
+			out.println(v + " " + 0);
+			out.flush();
 			int n = sc.nextInt();
-			qtTokensVase[vase] = n;
-			if (n < lower) {
-				lower = n;
-				candidateVase = vase;
+			qtTokensVase[v] = n;
+			if (n < qtTokensVase[candidateVase]) {
+				candidateVase = v;
 			}
-			// System.err.println("n = " + n);
 			for (int j = 0; j < n; ++j) {	
-				sc.nextInt();			
-				// int token = sc.nextInt();				
-				// System.err.println(token);
+				sc.nextInt();
 			}
-			++vase;
 		}
 		
-		System.err.printf("Candidate vase is %d and has %d tokens.\n",
-				candidateVase, qtTokensVase[candidateVase]);
+		//System.err.printf("Candidate vase is %d and has %d tokens.\n",
+		//		candidateVase, qtTokensVase[candidateVase]);
 		
 		for (int i = 0; i < 100 - N - 20; i++) {
-			int day = sc.nextInt();
-			System.err.println("Day " + day);
+			sc.nextInt();
 
 			int minV = 1;
 			if (minV == candidateVase) minV = 2;
@@ -91,11 +84,11 @@ public class Solution {
 			}
 			
 			out.println(minV + " " + 1);
+			out.flush();
 			++qtTokensVase[minV];
 		}
 		
-		int day = sc.nextInt();
-		System.err.println("Day " + day);
+		sc.nextInt();
 		out.println(candidateVase + " " + 100);
 		out.flush();
 	}
