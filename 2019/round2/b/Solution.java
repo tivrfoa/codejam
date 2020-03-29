@@ -1,6 +1,6 @@
 import java.util.*;
 import java.io.*;
-
+import static java.lang.System.out;
 
 /*
  * 
@@ -15,7 +15,6 @@ import java.io.*;
 public class Solution {
 
 	private static Scanner sc;
-	private static PrintWriter out;
 	
 	/**
 	 * The V and N magic values were taken from the problem analysis.
@@ -30,8 +29,7 @@ public class Solution {
 		
 	public static void main(String[] args) throws Exception {
 		
-		sc = new Scanner(System.in);
-		out = new PrintWriter(System.out);	
+		sc = new Scanner(System.in);	
 		
 		int T = sc.nextInt();
 		
@@ -49,7 +47,6 @@ public class Solution {
 		for (int d = 1; d < N; ++d) { // sabotaging V vases evenly
 			sc.nextInt();
 			out.println(vase + " " + d);
-			out.flush();
 			++vase;
 			if (vase == V + 1) vase = 1;
 		}
@@ -58,7 +55,6 @@ public class Solution {
 		for (int v = 1; v <= 20; ++v) { // inspect
 			sc.nextInt();
 			out.println(v + " " + 0);
-			out.flush();
 			int n = sc.nextInt();
 			qtTokensVase[v] = n;
 			if (n < qtTokensVase[candidateVase]) {
@@ -84,13 +80,11 @@ public class Solution {
 			}
 			
 			out.println(minV + " " + 1);
-			out.flush();
 			++qtTokensVase[minV];
 		}
 		
 		sc.nextInt();
 		out.println(candidateVase + " " + 100);
-		out.flush();
 	}
 
 }
