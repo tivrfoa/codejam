@@ -38,7 +38,7 @@ public class Solution {
 		int N = sc.nextInt();
 
 		for (int i = 0; i < N; i++) {
-			activities[i].setTime(sc.nextInt(), sc.nextInt());
+			activities[i].set(sc.nextInt(), sc.nextInt(), ' ', i);
 		}
 
 		Arrays.sort(activities, 0, N);
@@ -48,7 +48,6 @@ public class Solution {
 		
 		activities[0].user = 'C';
 		activities[1].user = 'J';
-		StringBuilder answer = new StringBuilder("CJ");
 		int currentC = 0;
 		int currentJ = 1;
 
@@ -77,7 +76,18 @@ public class Solution {
 					currentJ = i;
 				}
 			}
+		}
 
+		Arrays.sort(activities, 0, N, new Comparator<Activity>() {
+			@Override
+			public int compare(Activity a, Activity b) {
+				if (a.originalPosition < b.originalPosition) return -1;
+				return 1;
+			}
+		});
+
+		StringBuilder answer = new StringBuilder();
+		for (int i = 0; i < N; i++) {
 			answer.append(activities[i].user);
 		}
 
@@ -88,10 +98,13 @@ public class Solution {
 		int start;
 		int end;
 		char user;
+		int originalPosition;
 
-		void setTime(int start, int end) {
+		void set(int start, int end, char user, int originalPosition) {
 			this.start = start;
 			this.end = end;
+			this.user = user;
+			this.originalPosition = this.originalPosition;
 		}
 
 		@Override
