@@ -104,7 +104,7 @@ public class Solution {
 			this.start = start;
 			this.end = end;
 			this.user = user;
-			this.originalPosition = this.originalPosition;
+			this.originalPosition = originalPosition;
 		}
 
 		@Override
