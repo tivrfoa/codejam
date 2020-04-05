@@ -1,0 +1,44 @@
+  sol: 100 20
+  sol: 0
+  sol: 0
+  sol: 0
+  sol: 0
+  sol: 1
+  sol: 1
+  sol: 1
+  sol: 0
+  sol: 0
+  sol: 1
+  sol: 0
+  sol: 1
+  sol: 1
+  sol: 0
+  sol: 0
+  sol: 0
+  sol: 1
+  sol: 1
+  sol: 1
+  sol: 1
+  sol: 1
+  sol: 0
+  sol: 0
+  sol: 1
+  sol: 0
+  sol: 1
+  sol: 1
+  sol: 0
+  sol: 0
+  sol: 0
+  sol: 0
+  sol: 0
+  sol: 0
+  sol: 1
+  sol: 1
+  sol: 0
+  sol: 1
+  sol: 0
+  sol: 0
+  sol: 1
+judge: Case #1 fails:
+judge: Wrong answer: contestant input 11110001100001101001, but answer is 00001110010001101001.
+  sol: Reply: N

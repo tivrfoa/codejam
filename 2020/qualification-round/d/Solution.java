@@ -21,7 +21,7 @@ public class Solution {
 		String[] tb = sc.nextLine().split(" ");
 		int T = Integer.parseInt(tb[0]);
 		int B = Integer.parseInt(tb[1]);
-		// System.err.println(T + " " + B);
+		System.err.println(T + " " + B);
 
 		for (int t = 1; t <= T; ++t) {
 			solve(t, B);
@@ -39,11 +39,16 @@ public class Solution {
 		Arrays.fill(tmp1, -1);
 		list.add(tmp1);
 
-		for (int i = 1; i <= 150; i++) {
+		for (int i = 0; i <= 150;) {
 			for (int b = 0; b < B; ++b) {
-				out.println(b+1);
+				++i; out.println(b+1);
 				int bit = Integer.parseInt(sc.nextLine());
-				// System.err.println(bit);
+				System.err.println(bit);
+				final int idx = b;
+				if (i % 10 != 1) {
+					list.removeIf(l -> l[idx] != -1 && l[idx] != bit);
+				}
+
 				int size = list.size();
 				for (int j = 0; j < size; j++) {
 					int[] l = list.get(j);
@@ -51,14 +56,11 @@ public class Solution {
 					l[b] = bit;
 
 					if (i > 1 && i % 10 == 1) {
-						int[] tmp = invert(l);
-						tmp[b] = bit;
+						int[] tmp = invert(l, b);
 						list.add(tmp);
 						tmp = reverse(l);
-						tmp[b] = bit;
 						list.add(tmp);
-						tmp = complementationAndReversal(l);
-						tmp[b] = bit;
+						tmp = complementationAndReversal(l, b);
 						list.add(tmp);
 					}
 				}
@@ -88,15 +90,21 @@ public class Solution {
 		
 	}
 
-	private static int[] complementationAndReversal(int[] array) {
-		return invert(reverse(array));
+	private static int[] complementationAndReversal(int[] array, int b) {
+		return reverse(invert(array, b));
 	}
 
-	private static int[] invert(int[] array) {
+	private static int[] invert(int[] array, int b) {
 		int[] inverted = new int[array.length];
 
 		for (int i = 0; i < inverted.length; i++) {
-			inverted[i] = array[i] == 0 ? 1 : 0;
+			if (i == b) {
+				inverted[i] = array[i];
+			} else if (array[i] == -1) {
+				inverted[i] = -1;	
+			} else {
+				inverted[i] = array[i] == 0 ? 1 : 0;
+			}
 		}
 
 		return inverted;
@@ -120,7 +128,7 @@ public class Solution {
 		for (int i : test) System.out.print(i + " ");
 
 		System.out.print("\n--------- INVERTED ----------- ");
-		int[] inverted = invert(test);		
+		int[] inverted = invert(test, -1);		
 		for (int i : inverted) System.out.print(i + " ");
 
 		System.out.print("\n--------- REVERTED ----------- ");
