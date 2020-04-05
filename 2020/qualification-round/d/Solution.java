@@ -75,12 +75,14 @@ public class Solution {
 				for (int j = 0; j < size; j++) {
 					int[] l = list.get(j);
 
-					l[b] = bit;
-
 					if (i > 1 && i % 10 == 1) {
-						int[] tmp = invert(l, b);
-						list.add(tmp);
-						tmp = reverse(l);
+						if (l[b] == -1 || l[b] != bit) {
+							l[b] = bit;
+							int[] tmp = invert(l, b);
+							list.add(tmp);
+						}
+						l[b] = bit;
+						int[] tmp = reverse(l);
 						list.add(tmp);
 						tmp = complementationAndReversal(l, b);
 						list.add(tmp);
