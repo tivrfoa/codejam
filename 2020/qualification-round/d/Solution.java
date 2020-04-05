@@ -40,7 +40,29 @@ public class Solution {
 		list.add(tmp1);
 
 		for (int i = 0; i <= 150;) {
-			for (int b = 0; b < B; ++b) {
+			for (int b = 0; b < B && i <= 150; ++b) {
+				if (list.size() == 1) {
+					boolean isComplete = true;
+					int[] l = list.get(0);
+					for (int j = 0; j < B; j++) {
+						if (l[j] == -1) {
+							isComplete = false;
+							break;
+						}
+					}
+					if (isComplete) {
+						StringBuilder answer = new StringBuilder();
+						for (int j = 0; j < B; j++) {
+							answer.append(l[j]);
+						}
+						out.println(answer.toString());
+						String reply = sc.nextLine();
+						System.err.println("Reply: " + reply);
+						if ("Y".equals(reply)) return;
+						else System.exit(-1);
+					}
+				}
+
 				++i; out.println(b+1);
 				int bit = Integer.parseInt(sc.nextLine());
 				System.err.println(bit);
@@ -63,27 +85,6 @@ public class Solution {
 						tmp = complementationAndReversal(l, b);
 						list.add(tmp);
 					}
-				}
-			}
-			if (list.size() == 1) {
-				boolean isComplete = true;
-				int[] l = list.get(0);
-				for (int j = 0; j < B; j++) {
-					if (l[j] == -1) {
-						isComplete = false;
-						break;
-					}
-				}
-				if (isComplete) {
-					StringBuilder answer = new StringBuilder();
-					for (int j = 0; j < B; j++) {
-						answer.append(l[j]);
-					}
-					out.println(answer.toString());
-					String reply = sc.nextLine();
-					System.err.println("Reply: " + reply);
-					if ("Y".equals(reply)) return;
-					else System.exit(-1);
 				}
 			}
 		}
