@@ -24,7 +24,7 @@ public class Solution {
 	
 	private static int query(int c) {
 		out.println(c+1);
-		++queryCount;
+		//++queryCount;
 		return sc.nextInt();
 	}
 	
@@ -59,16 +59,25 @@ public class Solution {
 	}
 
 	private static void solve(int t) {
+		samepair = -1;
+		diffpair = -1;
 
-		for (int c = 0; c < b/2; ++c) {
+		int c = 0;
+		for (; c < 5; ++c) {
 			findpair(c);
-			if (queryCount > 0 && (queryCount+1)%10 == 1)
-				findchange();
+		}
+		findchange();
+		while (c < b/2) {
+			int i = 0;
+			for (; i < 4 && c < b/2; ++i, ++c)
+				findpair(c);
+			if (i == 4)
+					findchange();			
 		}
 		
-		for (int i = 0; i < b; i++) {
+		for (int i = 0; i < b; i++)
 			out.print(ans[i]);
-		}
+
 		out.println();
 		
 		String ok = sc.next();
@@ -89,7 +98,5 @@ public class Solution {
 		}
 
 		sc.close();
-
-		// tests();
 	}
 }
