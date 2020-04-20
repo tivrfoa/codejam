@@ -74,15 +74,15 @@ class Solution {
     private static void solve() {
 
         done = false;
-        int[] at = {-1, -1};
+        int x = 0, y = 0;
         memo = new TreeMap<>();
 
         loop1:
         for (int i = bx + r; i <= cx; i+=r) {
             for (int j = by + r; j <= cy; j+=r) {
                 if (query(i, j) != 0) {
-                    at[0] = i;
-                    at[1] = j;
+                    x = i;
+                    y = j;
                     break loop1;
                 }
             }
@@ -90,10 +90,10 @@ class Solution {
 
         int lx, rx, ly, ry;
         {
-            int lo = bx, hi = at[1] - 1, ans = at[0];
-            while (lo <= hi) {
+            int lo = bx, hi = x - 1, ans = x;
+            while (lo < hi) {
                 int mid = (lo + hi) >> 1;
-                if (query(mid, at[1]) != 0) {
+                if (query(mid, y) != 0) {
                     ans = mid;
                     hi = mid - 1;
                 } else {
@@ -103,10 +103,10 @@ class Solution {
             lx = ans;
         }
         {
-            int lo = at[0] + 1, hi = cx, ans = at[0];
-            while (lo <= hi) {
+            int lo = x + 1, hi = cx, ans = x;
+            while (lo < hi) {
                 int mid = (lo + hi) >> 1;
-                if (query(mid, at[1]) != 0) {
+                if (query(mid, y) != 0) {
                     ans = mid;
                     lo = mid + 1;
                 } else {
@@ -116,10 +116,10 @@ class Solution {
             rx = ans;
         }
         {
-            int lo = bx, hi = at[1] - 1, ans = at[1];
-            while (lo <= hi) {
+            int lo = bx, hi = y - 1, ans = y;
+            while (lo < hi) {
                 int mid = (lo + hi) >> 1;
-                if (query(at[0], mid) != 0) {
+                if (query(x, mid) != 0) {
                     ans = mid;
                     hi = mid - 1;
                 } else {
@@ -129,10 +129,10 @@ class Solution {
             ly = ans;
         }
         {
-            int lo = at[1] + 1, hi = cx, ans = at[1];
-            while (lo <= hi) {
+            int lo = y + 1, hi = cx, ans = y;
+            while (lo < hi) {
                 int mid = (lo + hi) >> 1;
-                if (query(at[0], mid) != 0) {
+                if (query(x, mid) != 0) {
                     ans = mid;
                     lo = mid + 1;
                 } else {
