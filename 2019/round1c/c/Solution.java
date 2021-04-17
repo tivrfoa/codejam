@@ -41,6 +41,14 @@ public class Solution {
 
 			return s;
 		}
+
+		@Override
+		public int hashCode() {
+			final int prime = 31;
+			int result = 1;
+			result = prime * result + Arrays.deepHashCode(matrix);
+			return result;
+		}
 	}
 
 	// If there is at least one move where next player won, then set to 0, otherwise sum victories.
@@ -84,7 +92,7 @@ public class Solution {
 					// bottom
 					State ns2 = s.copy(r + 1, R - 1, 0, C - 1);
 					int tmp2 = find_winning_moves(ns2);
-					if (tmp1 > 0 && tmp2 > 0) bad = true;
+					if (tmp1 == 0 && tmp2 > 0 || tmp1 > 0 && tmp2 == 0) bad = true;
 				}
 
 				if (!bad) ans += C;
@@ -124,7 +132,7 @@ public class Solution {
 					State ns2 = s.copy(0, R - 1, c + 1, C - 1);
 					int tmp2 = find_winning_moves(ns2);
 					
-					if (tmp1 > 0 && tmp2 > 0) bad = true;
+					if (tmp1 == 0 && tmp2 > 0 || tmp1 > 0 && tmp2 == 0) bad = true;
 				}
 
 				if (!bad) ans += R;
