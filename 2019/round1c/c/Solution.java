@@ -79,15 +79,12 @@ public class Solution {
 				} else {
 					// top
 					State ns1 = s.copy(0, r - 1, 0, C - 1);
-					int tmp = find_winning_moves(ns1);
-					if (tmp > 0) bad = true;
+					int tmp1 = find_winning_moves(ns1);
 
-					if (!bad) {
-						// bottom
-						State ns2 = s.copy(r + 1, R - 1, 0, C - 1);
-						tmp = find_winning_moves(ns2);
-						if (tmp > 0) bad = true;
-					}
+					// bottom
+					State ns2 = s.copy(r + 1, R - 1, 0, C - 1);
+					int tmp2 = find_winning_moves(ns2);
+					if (tmp1 > 0 && tmp2 > 0) bad = true;
 				}
 
 				if (!bad) ans += C;
@@ -122,7 +119,6 @@ public class Solution {
 					// left
 					State ns1 = s.copy(0, R - 1, 0, c - 1);
 					int tmp1 = find_winning_moves(ns1);
-					// if (tmp > 0) bad = true;
 
 					// right
 					State ns2 = s.copy(0, R - 1, c + 1, C - 1);
