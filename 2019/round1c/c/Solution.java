@@ -6,50 +6,27 @@ public class Solution {
 	static HashMap<State, Integer> mem = new HashMap<>();
 
 	private static class State {
-		int num_radioactive = 0;
 		char[][] matrix;
-		int first_player_winning_moves = 0;
 
-		public int set_num_radioactive() {
-			for (int i = 0; i < this.matrix.length; ++i) {
-				for (int j = 0; j < this.matrix.length; ++j) {
-					if (this.matrix[i][j] == '#') ++this.num_radioactive;
-				}
-			}
-			return this.num_radioactive;
-		}
-
-		public static State read(int R, int C) {
+		public static State read(int R, int C, FastScanner in) {
 			State s = new State();
-			s.matrix = new int[R][C];
+			s.matrix = new char[R][C];
 			for (int i = 0; i < R; ++i) {
 				s.matrix[i] = in.nextToken().toCharArray();
-				for (int j = 0; j < C; ++j) {
-					if (s.matrix[i][j] == '#') ++s.num_radioactive;
-				}
 			}
 			return s;
 		}
 		
 		public State() {}
 
-		public State(char[][] m) {
-			this.matrix = m;
-			this.set_num_radioactive();
-		}
-
-		public State(int n, int[][] m) {
-			this.num_radioactive = n;
-			this.matrix = m;
-		}
-
 		public boolean equals(Object other) {
 			State that = (State) other;
-			if (this.num_radioactive != that.num_radioactive) return false;
-			if (this.m.length != that.m.length || this.m[0].length != that.m[0].length) return false;
-			for (int i = 0; i < m.length; ++i) {
-				for (int j = 0; j < m[i].length; ++j) {
-					if (m[i][j] != that.m[i][j]) return false;
+			if (this.matrix.length != that.matrix.length
+					|| this.matrix[0].length != that.matrix[0].length)
+				return false;
+			for (int i = 0; i < matrix.length; ++i) {
+				for (int j = 0; j < matrix[i].length; ++j) {
+					if (matrix[i][j] != that.matrix[i][j]) return false;
 				}
 			}
 			return true;
@@ -67,13 +44,9 @@ public class Solution {
 	}
 
 	// If there is at least one move where next player won, then set to 0, otherwise sum victories.
-	int find_winning_moves(State s, boolean first_to_move) {
+	int find_winning_moves(State s) {
 		Integer wn = mem.get(s);
 		if (wn != null) return wn;
-		/* if (wn != null) {
-			if (first_to_move) return wn;
-			return 0;
-		}*/
 
 		int ans = 0;
 		char[][] m = s.matrix;
@@ -87,31 +60,37 @@ public class Solution {
 					ok = false;
 					break;
 				}
-				if (ok) {
-					boolean bad = false;
-					// split two sub-problems
-					if (r == 0) {
-						if (r < R - 1) {
-							State ns = s.copy(r + 1, R - 1, 0, C - 1);
-							int tmp = find_winning_moves(ns, !first_to_move);
-							if (first_to_move && tmp > 0) bad = true;
-						}
-					} else if (r == R - 1) {
-						State ns = s.copy(0, R - 1, 0, C - 1);
-						int tmp = find_winning_moves(ns, !first_to_move);
-						if (first_to_move && tmp > 0) bad = true;
-					} else {
-						State ns1 = s.copy(0, r - 1, 0, C - 1);
-						int tmp = find_winning_moves(ns1, !first_to_move);
-						if (first_to_move && tmp > 0) bad = true;
-
-						State ns2 = s.copy(r + 1, R - 1, 0, C - 1);
-						tmp = find_winning_moves(ns2, !first_to_move);
-						if (first_to_move && tmp > 0) bad = true;
+			}
+			if (ok) {
+				boolean bad = false;
+				// split two sub-problems
+				if (r == 0) {
+					if (r < R - 1) {
+						// bottom
+						State ns = s.copy(r + 1, R - 1, 0, C - 1);
+						int tmp = find_winning_moves(ns);
+						if (tmp > 0) bad = true;
 					}
+				} else if (r == R - 1) {
+					// top
+					State ns = s.copy(0, r - 1, 0, C - 1);
+					int tmp = find_winning_moves(ns);
+					if (tmp > 0) bad = true;
+				} else {
+					// top
+					State ns1 = s.copy(0, r - 1, 0, C - 1);
+					int tmp = find_winning_moves(ns1);
+					if (tmp > 0) bad = true;
 
-					if (!bad) ans += 1;
+					if (!bad) {
+						// bottom
+						State ns2 = s.copy(r + 1, R - 1, 0, C - 1);
+						tmp = find_winning_moves(ns2);
+						if (tmp > 0) bad = true;
+					}
 				}
+
+				if (!bad) ans += C;
 			}
 		}
 
@@ -119,39 +98,40 @@ public class Solution {
 		for (int c = 0; c < C; ++c) {
 			boolean ok = true;
 			for (int r = 0; r < R; ++r) {
-				if (m[c][r] == '#') {
+				if (m[r][c] == '#') {
 					ok = false;
 					break;
 				}
-				if (ok) {
-					boolean bad = false;
-					// split two sub-problems
-					if (c == 0) {
-						if (c < C - 1) {
-							// right
-							State ns = s.copy(0, R - 1, c + 1, C - 1);
-							int tmp = find_winning_moves(ns, !first_to_move);
-							if (first_to_move && tmp > 0) bad = true;
-						}
-					} else if (c == C - 1) {
-						// left
-						State ns = s.copy(0, R - 1, 0, c - 1);
-						int tmp = find_winning_moves(ns, !first_to_move);
-						if (first_to_move && tmp > 0) bad = true;
-					} else {
-						// left
-						State ns1 = s.copy(0, R - 1, 0, c - 1);
-						int tmp = find_winning_moves(ns1, !first_to_move);
-						if (first_to_move && tmp > 0) bad = true;
-
+			}
+			if (ok) {
+				boolean bad = false;
+				// split two sub-problems
+				if (c == 0) {
+					if (c < C - 1) {
 						// right
 						State ns = s.copy(0, R - 1, c + 1, C - 1);
-						tmp = find_winning_moves(ns2, !first_to_move);
-						if (first_to_move && tmp > 0) bad = true;
+						int tmp = find_winning_moves(ns);
+						if (tmp > 0) bad = true;
 					}
+				} else if (c == C - 1) {
+					// left
+					State ns = s.copy(0, R - 1, 0, c - 1);
+					int tmp = find_winning_moves(ns);
+					if (tmp > 0) bad = true;
+				} else {
+					// left
+					State ns1 = s.copy(0, R - 1, 0, c - 1);
+					int tmp1 = find_winning_moves(ns1);
+					// if (tmp > 0) bad = true;
 
-					if (!bad) ans += 1;
+					// right
+					State ns2 = s.copy(0, R - 1, c + 1, C - 1);
+					int tmp2 = find_winning_moves(ns2);
+					
+					if (tmp1 > 0 && tmp2 > 0) bad = true;
 				}
+
+				if (!bad) ans += R;
 			}
 		}
 
@@ -161,10 +141,9 @@ public class Solution {
 
 	
 	int solve2() {
-		int ans = 0;
 		int R = in.nextInt();
 		int C = in.nextInt();
-		State s = State.read(R, C);
+		State s = State.read(R, C, in);
 		return find_winning_moves(s);
 	}
 
