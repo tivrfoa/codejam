@@ -57,7 +57,7 @@ public class Solution {
 		//out.println(primes[N-1]);
 
 		final long Z = in.nextLong();
-		int p2 = find_prime_index_at_most_n((int) Z / 2);
+		int p2 = find_prime_index_at_most_n((int) Math.sqrt(Z) + 1) + 1;
 		int p1 = p2 - 1;
 		// out.printf("---> primes[%d] = %d\n", p2, primes[p2]);
 		long product = 0;
