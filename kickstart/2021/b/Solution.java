@@ -10,15 +10,14 @@ public class Solution {
 
 	
 	int solve2() {
-		int ans = 0;
 		final int N = in.nextInt();
 		final int[] A = new int[N];
 		readArray(A);
 		if (N <= 3) return N;
 		int diff = A[1] - A[0];
 		int from_index = 0;
-		int current_length = 2;
-		for (int i = 2; i < N /*&& current_length + (N - i) > ans*/; ++i) {
+		int ans = 3, current_length = 1;
+		for (int i = 1; i < N /*&& current_length + (N - i) > ans*/; ++i) {
 			int tmpDiff = A[i] - A[i - 1];
 			if (tmpDiff == diff) {
 				++current_length;
@@ -29,7 +28,7 @@ public class Solution {
 					if (from_index > 0) {
 						int prev = A[from_index] - diff;
 						++current_length;
-						for (int j = from_index - 2; j > 0; --j) {
+						for (int j = from_index - 2; j >= 0; --j) {
 							if (prev - A[j] != diff) break;
 							++current_length;
 							prev = A[j];
@@ -47,7 +46,7 @@ public class Solution {
 				if (from_index > 0) {
 					int prev = A[from_index] - diff;
 					++back;
-					for (j = from_index - 2; j > 0; --j) {
+					for (j = from_index - 2; j >= 0; --j) {
 						if (prev - A[j] != diff) break;
 						++back;
 						prev = A[j];
@@ -70,8 +69,9 @@ public class Solution {
 
 				if (i == N - 1) break;
 				current_length = 1;
-				from_index = i;
-				diff = A[i + 1] - A[i];
+				from_index = i - 1;
+				diff = A[i] - A[i - 1];
+				--i;
 			}
 		}
 		return ans;
