@@ -7,8 +7,28 @@ A[i] is positive
 */
 public class Solution {
 
+	int find_length_backwards(int[] A, int from_index, int diff) {
+		int len = 1;
+		int prev = A[from_index] - diff;
+		for (int j = from_index - 2; j >= 0; --j) {
+			if (prev - A[j] != diff) break;
+			++len;
+			prev = A[j];
+		}
+		return len;
+	}
 
-	
+	int find_length_forward(int[] A, int i, int diff) {
+		int len = 1;
+		int prev = A[i - 1] + diff;
+		for (int j = i + 1; j < A.length; ++j) {
+			if (A[j] - prev != diff) break;
+			++len;
+			prev = A[j];
+		}
+		return len;
+	}
+
 	int solve2() {
 		final int N = in.nextInt();
 		final int[] A = new int[N];
@@ -17,54 +37,31 @@ public class Solution {
 		int diff = A[1] - A[0];
 		int from_index = 0;
 		int ans = 3, current_length = 1;
-		for (int i = 1; i < N /*&& current_length + (N - i) > ans*/; ++i) {
+		for (int i = 1; i < N; ++i) {
 			int tmpDiff = A[i] - A[i - 1];
 			if (tmpDiff == diff) {
 				++current_length;
 				if (i == N - 1) {
-					if (current_length > ans) {
-						ans = current_length;
-					}
 					if (from_index > 0) {
-						int prev = A[from_index] - diff;
-						++current_length;
-						for (int j = from_index - 2; j >= 0; --j) {
-							if (prev - A[j] != diff) break;
-							++current_length;
-							prev = A[j];
-						}
-						if (current_length > ans) ans = current_length;
+						current_length += find_length_backwards(A, from_index, diff);
 					}
+					if (current_length > ans) ans = current_length;
 				}
 			} else {
 				// try backwards and forward
 				int back = current_length;
 				int front = current_length;
-				int j = 0;
 
 				// backwards
 				if (from_index > 0) {
-					int prev = A[from_index] - diff;
-					++back;
-					for (j = from_index - 2; j >= 0; --j) {
-						if (prev - A[j] != diff) break;
-						++back;
-						prev = A[j];
-					}
+					back += find_length_backwards(A, from_index, diff);
 				}
 
 				// forward
-				int prev = A[i - 1] + diff;
-				++front;
-				for (j = i + 1; j < N; ++j) {
-					if (A[j] - prev != diff) break;
-					++front;
-					prev = A[j];
-				}
+				front += find_length_forward(A, i, diff);
 
 				if (back > ans || front > ans) {
 					ans = (back > front) ? back : front;
-					// if (j == N) break;
 				}
 
 				if (i == N - 1) break;
