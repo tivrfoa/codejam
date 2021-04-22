@@ -17,6 +17,7 @@ public class Solution {
 
 	static class City {
 		Connection up;
+		Map<Integer, Long> mem_cost = new HashMap<>();
 	}
 
 	static class Connection {
@@ -39,7 +40,12 @@ public class Solution {
 		Connection up = c.up;
 		int city_dest = up.X != city_index ? up.X : up.Y;
 		long pay = charge(up.A, w, up.L);
-		long tmp1 = toll_charges(city_dest, w);
+		Long tmp1 = cities[city_dest].mem_cost.get(w);
+		if (tmp1 == null) {
+			tmp1 = toll_charges(city_dest, w);
+			cities[city_dest].mem_cost.put(w, tmp1);
+		}
+
 		return tmp1 == 0 ? pay : gcd(pay, tmp1);
 	}
 
