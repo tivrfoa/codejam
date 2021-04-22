@@ -4,7 +4,7 @@ import java.io.*;
 public class Solution {
 
 	City[] cities;
-	Connection[][] connections;
+	ArrayList<Connection>[] connections;
 	boolean[] visited;
 
 	long charge(long a, int w, int l) {
@@ -17,7 +17,6 @@ public class Solution {
 
 	static class City {
 		Connection up;
-		// List<Connection> down_connections = new ArrayList<>();
 	}
 
 	static class Connection {
@@ -48,10 +47,8 @@ public class Solution {
 	*  DFS
 	*/
 	void set_up_connections(int city_destination) {
-		if (visited[city_destination]) return;
 		visited[city_destination] = true;
-		for (Connection c : connections[city_destination]) if (c != null) {
-			// cities[city_destination].down_connections.add(c);
+		for (Connection c : connections[city_destination]) {
 			int city_src = c.X != city_destination ? c.X : c.Y;
 			if (visited[city_src]) continue;
 			if (cities[city_src] == null) cities[city_src] = new City();
@@ -65,7 +62,9 @@ public class Solution {
 		final int Q = in.nextInt();
 		cities = new City[N+1];
 		cities[1] = new City();
-		connections = new Connection[N+1][N+1];
+		connections = new ArrayList[N+1];
+		for (int i = 0; i < connections.length; ++i)
+			connections[i] = new ArrayList<Connection>();
 		visited = new boolean[N+1];
 		for (int i = 0; i < N - 1; ++i) {
 			int x = in.nextInt();
@@ -73,8 +72,8 @@ public class Solution {
 			int l = in.nextInt();
 			long a = in.nextLong();
 			Connection c = new Connection(x, y, l, a);
-			connections[x][y] = c;
-			connections[y][x] = c;
+			connections[x].add(c);
+			connections[y].add(c);
 		}
 
 		// create a structure that I can easily query up the tree
