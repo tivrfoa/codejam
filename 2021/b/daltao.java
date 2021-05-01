@@ -14,7 +14,7 @@ import java.io.InputStream;
  * Built using CHelper plug-in
  * Actual solution is at the top
  */
-public class Solution {
+public class daltao {
     public static void main(String[] args) throws Exception {
         Thread thread = new Thread(null, new TaskAdapter(), "", 1 << 29);
         thread.start();

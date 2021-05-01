@@ -6,6 +6,13 @@
     "configurations": [
         {
             "type": "java",
+            "name": "Launch daltao",
+            "request": "launch",
+            "mainClass": "daltao",
+            "projectName": "b_fddc977e"
+        },
+        {
+            "type": "java",
             "name": "Launch Current File",
             "request": "launch",
             "mainClass": "${file}"

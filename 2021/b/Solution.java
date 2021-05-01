@@ -66,10 +66,9 @@ public class Solution {
 
 	long nextRoaringNumber(long y) {
 		if (y == 1) return 12;
-		for (long n = y + 1; n < 1e15; ++n)
+		for (long n = y + 1; ; ++n)
 			if (isRoaringNumber(n))
 				return n;
-		return -1;
 	}
 
 	void solve2(int test_case) {
