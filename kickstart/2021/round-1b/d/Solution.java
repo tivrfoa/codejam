@@ -17,15 +17,13 @@ public class Solution {
 
 	static class City {
 		Connection up;
-		Map<Integer, Long> mem_cost = new HashMap<>();
 	}
 
 	static class Connection {
-		final int X, Y, L;
+		final int to, L;
 		final long A;
-		public Connection(int x, int y, int l, long a) {
-			this.X = x;
-			this.Y = y;
+		public Connection(int to, int l, long a) {
+			this.to = to;
 			this.L = l;
 			this.A = a;
 		}
@@ -38,14 +36,9 @@ public class Solution {
 		if (city_index == 1) return 0;
 		City c = cities[city_index];
 		Connection up = c.up;
-		int city_dest = up.X != city_index ? up.X : up.Y;
+		int city_dest = up.to;
 		long pay = charge(up.A, w, up.L);
-		Long tmp1 = cities[city_dest].mem_cost.get(w);
-		if (tmp1 == null) {
-			tmp1 = toll_charges(city_dest, w);
-			cities[city_dest].mem_cost.put(w, tmp1);
-		}
-
+		long tmp1 = toll_charges(city_dest, w);
 		return tmp1 == 0 ? pay : gcd(pay, tmp1);
 	}
 
@@ -55,7 +48,7 @@ public class Solution {
 	void set_up_connections(int city_destination) {
 		visited[city_destination] = true;
 		for (Connection c : connections[city_destination]) {
-			int city_src = c.X != city_destination ? c.X : c.Y;
+			int city_src = c.to;
 			if (visited[city_src]) continue;
 			if (cities[city_src] == null) cities[city_src] = new City();
 			cities[city_src].up = c;
@@ -77,9 +70,8 @@ public class Solution {
 			int y = in.nextInt();
 			int l = in.nextInt();
 			long a = in.nextLong();
-			Connection c = new Connection(x, y, l, a);
-			connections[x].add(c);
-			connections[y].add(c);
+			connections[x].add(new Connection(y, l, a));
+			connections[y].add(new Connection(x, l, a));
 		}
 
 		// create a structure that I can easily query up the tree
